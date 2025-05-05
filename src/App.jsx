@@ -1,22 +1,55 @@
-import { ToastContainer } from 'react-toastify';
-import { nanoid } from 'nanoid';
-import Form from './Form';
-import Items from './Items';
-import { useState } from 'react';
-const defaultItems = [
-  { id: nanoid(), title: 'walk the dog', isDone: false },
-  { id: nanoid(), title: 'wash dishes', isDone: false },
-  { id: nanoid(), title: 'drink coffee', isDone: true },
-  { id: nanoid(), title: 'take a nap', isDone: false },
-];
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ApplicationNavigation from './ApplicationNavigation';
+import TodoIndex from './TodosApp';
+import MixMasterIndex from './MixMaster/MainComponent';
+import { About, Cocktail, Landing, Newsletter, Error, SinglePageError } from './MixMaster/pages';
+import { loader as landingLoader } from './MixMaster/pages/Landing';
+import { loader as cocktailLoader } from './MixMaster/pages/Cocktail';
+import { action as formAction } from './MixMaster/pages/Newsletter';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <ApplicationNavigation />,
+    errorElement: <Error />,
+    children: [
+      {
+        path: "mix-master",
+        element: <MixMasterIndex />,
+        children: [
+          {
+            index: true,
+            loader: landingLoader,
+            errorElement: <SinglePageError />,
+            element: <Landing />
+          },
+          {
+            path: "about",
+            element: <About />
+          },
+          {
+            path: "cocktail/:id",
+            errorElement: <SinglePageError />,
+            loader: cocktailLoader,
+            element: <Cocktail />
+          },
+          {
+            path: "newsletter",
+            element: <Newsletter />,
+            action: formAction
+          }
+        ]
+      },
+      {
+        index: true,
+        element: <TodoIndex />
+      }
+    ]
+  }
+])
 const App = () => {
-  const [items, setItems] = useState(defaultItems);
   return (
-    <section className='section-center'>
-      <ToastContainer position='top-center' />
-      <Form />
-      <Items items={items} />
-    </section>
+    <RouterProvider router={router}/>
   );
 };
 export default App;

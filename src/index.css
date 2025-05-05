@@ -265,9 +265,9 @@ ul {
   box-shadow: var(--shadow-1);
   transition: var(--transition);
 }
-.section-center:hover {
+/* .section-center:hover {
   box-shadow: var(--shadow-3);
-}
+} */
 
 form h4 {
   text-align: center;
@@ -312,3 +312,11 @@ form h4 {
 .Toastify__toast {
   text-transform: capitalize;
 }
+
+.page {
+  width: var(--view-width);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 5rem 2rem;
+}
+
